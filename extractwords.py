@@ -1,5 +1,6 @@
 import sys
 from collections import Counter
+import PorterStemmer
 
 def removeStopwords(c):
 	stopwords = [ "a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost", 
@@ -33,9 +34,11 @@ def removeStopwords(c):
 			del c[s]
 	return c
 
-mytext = open(sys.argv[1]).read()
-freq = Counter(mytext.split())
+def stem(l):
+	stemmer = PorterStemmer.PorterStemmer()
+	return [ stemmer.stem(w, 0, len(w)-1) for w in l ]
 
-print freq
-freq = removeStopwords(freq)
-print freq
+
+mytext = open(sys.argv[1]).read()
+freq = removeStopwords(Counter(stem(mytext.split())))
+
